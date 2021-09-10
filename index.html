@@ -76,7 +76,7 @@
 
   function update() {
     if(duration.value && size.value) {
-      result.innerHTML = (parseInt(size.value)*8191)/parseInt(duration.value)-128 + " kb/s"
+      result.innerHTML = Math.floor((parseInt(size.value)*8191)/parseInt(duration.value)-128) + " kb/s"
       result.style.display = "block"
     } else {
       result.style.display = "none"
