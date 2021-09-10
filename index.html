@@ -52,6 +52,7 @@
   }
 
   #result {
+    display: none;
     margin-top: 1em;
     background: rgba(131, 36, 255, 0.5);
     padding: 0.5em 1em;
@@ -76,6 +77,9 @@
   function update() {
     if(duration.value && size.value) {
       result.innerHTML = (parseInt(size.value)*8191)/parseInt(duration.value)-128 + " kbits/s"
+      result.style.display = "block"
+    } else {
+      result.style.display = "none"
     }
   }
 </script>
