@@ -65,7 +65,7 @@
   <label for="duration">المدة بالثواني</label>
   <input id="duration" name="duration" type="text" placeholder="ex: 30s" oninput="update()">
   <label for="size">الحجم النهائي بالميجابايت</label>
-  <input id="size" name="size" type="text" placeholder="StreamElements Max Size = 30" oninput="update()">
+  <input id="size" name="size" type="text" placeholder="StreamElements Max Size = 30mb" oninput="update()">
   <div id="result"></div>
 </div>
 
@@ -76,7 +76,7 @@
 
   function update() {
     if(duration.value && size.value) {
-      result.innerHTML = (parseInt(size.value)*8191)/parseInt(duration.value)-128 + " kbits/s"
+      result.innerHTML = (parseInt(size.value)*8191)/parseInt(duration.value)-128 + " kb/s"
       result.style.display = "block"
     } else {
       result.style.display = "none"
