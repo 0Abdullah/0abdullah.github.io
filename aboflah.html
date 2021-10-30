@@ -36,7 +36,7 @@ function updateAPI(){
     result.sort(function(a,b){
       return new Date(b.Time) - new Date(a.Time);
     });
-    if(JSON.stringify(result[0]) == JSON.stringify(lastRes)) {
+    if(JSON.stringify(result[0]) != JSON.stringify(lastRes)) {
       lastRes = result[0]
       $(`<tr class="item"><td>${result[0].Message}</td> <td class="name">${result[0].Name}</td></tr>`)
         .hide()
