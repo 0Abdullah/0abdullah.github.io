@@ -1,0 +1,102 @@
+<table id="donations"></table>
+<script>
+let lastRes;
+let count = 0;
+initialAPI();
+setInterval(function(){
+  //updateAPI();
+}, 7000);
+
+function initialAPI() {
+fetch("https://opensheet.vercel.app/1zI_naxM5zhZBLvWGNbh1BFGJ_T71NNfHyG18jjj4nkw/Sheet1").then(res => res.json()).then(result => {
+      if(!result.length) return
+      result.sort(function(a,b){
+        return new Date(b.Time) - new Date(a.Time);
+      });
+      result = result.slice(0, 500)
+      result.reverse();
+      //console.log(result[0])
+      for (let i = 0; i < result.length; i++) {
+      //console.log(new Date(result[i].Time).toLocaleTimeString())
+      
+      $(`<tr class="item"><td>${result[i].Message}</td> <td class="name">${result[i].Name}</td><td class="time">${new Date(result[i].Time).toLocaleTimeString()}</td></tr>`)
+          .hide()
+          .prependTo("#donations")
+          .slideToggle();
+      }
+      lastRes = result[0]
+    })
+}
+
+function updateAPI(){
+  let html = '';
+  fetch("https://opensheet.vercel.app/1zI_naxM5zhZBLvWGNbh1BFGJ_T71NNfHyG18jjj4nkw/Sheet1").then(res => res.json()).then(result => {
+    if(!result.length) return
+    result.sort(function(a,b){
+      return new Date(b.Time) - new Date(a.Time);
+    });
+    if(JSON.stringify(result[0]) == JSON.stringify(lastRes)) {
+      $(`<div class="item">${result[count].Message} <span class="name">- ${result[count].Name}</span></div>`)
+        .hide()
+        .prependTo("#donations")
+        .slideToggle();
+      count++
+    } else {
+      count++
+      lastRes = result[0]
+      $(`<div class="item">${result[0].Message} <span class="name">- ${result[0].Name}</span></div>`)
+        .hide()
+        .prependTo("#donations")
+        .slideToggle();
+
+    }
+  })
+}
+
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-align: center;
+}
+body {
+  padding: 15px;
+}
+#donations {
+  font-family: cairo;
+  color: black;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 10px;
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: auto;
+
+}
+
+.item {
+  animation: fadeIn 1s 400ms both;
+  padding: 15px;
+  text-align: right;
+}
+
+.name {
+  font-weight: bold;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+table, td, th {  
+  border: 1px solid #ddd;
+}
+</style>
