@@ -1,10 +1,18 @@
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,800;1,800&family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
 <div id="container">
 <input id="name" type="text" placeholder="الاسم" oninput="updateName(this)">
   <h1 id="title">رقم الدفاع المدني</h1>
   <input id="first" type="button" value="997" onclick="answer(this)">
   <input id="second" type="button" value="998" onclick="answer(this)">
 </div>
+
+
 
 <script>
 let question = "first";
@@ -30,12 +38,22 @@ function correct(el) {
   data["mark"]++
   el.classList.add('correct')
   el.value = '✔'
+  anime({
+    targets: el,
+    scale: 1.1,
+    rotate: 5
+  });
 }
 
 function notCorrect(el) {
   data[question] = false
   el.classList.add('notCorrect')
   el.value = '✘'
+  anime({
+    targets: el,
+    scale: 0.9,
+    rotate: "-5"
+  });
 }
 
 function nextQuestion() {
@@ -45,7 +63,11 @@ function nextQuestion() {
 
   first.disabled = false;
   second.disabled = false
-
+  anime({
+    targets: [title, second],
+    scale: 1,
+    rotate: 0
+  });
   title.innerHTML = "الجار"
   first.value = "لام شمسية"
   second.value = "لام قمرية"
@@ -83,18 +105,28 @@ function updateName(el) {
 }
 </script>
 <style>
+
+:root {
+  --background: #d7e9fc;
+  --btn: #96adff;
+  --name: #aebffc;
+  --text: #0c1224;
+}
+
 * {
   font-family: tajawal;
   transition: filter 0.2s;
-  color: white;
+  color: var(--text);
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  overflow: hidden;
 }
 
+
+
 body {
-  background: hsl(231, 40%, 10%);
+  
+  background: var(--background);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -114,19 +146,20 @@ h2#result {
   font-weight: 500;
 }
 
+
+
 #first, #second {
   width: 300px;
   height: 150px;
   font-size: 50px;
-  background: hsl(231, 40%, 16%);
-  color: white;
+  background: var(--btn);
   border: none;
   border-radius: 30px;
-  margin: 0 15px;
+  margin: 15px;
 }
 
 #first:hover, #second:hover {
-  filter: brightness(130%);
+  filter: brightness(70%);
   cursor: pointer;
 }
 
@@ -141,12 +174,13 @@ h2#result {
 #name {
   width: 300px;
   padding: 20px;
-  background: hsl(231, 40%, 20%);
+  background: var(--name);
   border: none;
   border-radius: 20px;
   margin-bottom: 20px;
   outline: none;
   text-align: center;
+  font-size: 30px;
 }
 
 input {
