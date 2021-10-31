@@ -1,0 +1,157 @@
+
+<div id="container">
+<input id="name" type="text" placeholder="الاسم" oninput="updateName(this)">
+  <h1 id="title">رقم الدفاع المدني</h1>
+  <input id="first" type="button" value="997" onclick="answer(this)">
+  <input id="second" type="button" value="998" onclick="answer(this)">
+</div>
+
+<script>
+let question = "first";
+let data = {"name": "", "mark": 0, "first": false, "second": false}
+function answer(el) {
+  if(!document.getElementById('name').value) return alert("الرجاء كتابة الأسم")
+  if(question == "first" && el.value == "998") correct(el)
+  if(question == "first" && el.value == "997") notCorrect(el)
+  if(question == "second" && el.value == "لام قمرية") correct(el)
+  if(question == "second" && el.value == "لام شمسية") notCorrect(el)
+  console.log(data)
+
+  document.getElementById('first').disabled = true;
+  document.getElementById('second').disabled = true;
+  setTimeout(() => {
+    if(question == "second") return endQuiz()
+    nextQuestion()
+  }, 1000)
+}
+
+function correct(el) {
+  data[question] = true
+  data["mark"]++
+  el.classList.add('correct')
+  el.value = '✔'
+}
+
+function notCorrect(el) {
+  data[question] = false
+  el.classList.add('notCorrect')
+  el.value = '✘'
+}
+
+function nextQuestion() {
+  let title = document.getElementById('title')
+  let first = document.getElementById('first')
+  let second = document.getElementById('second')
+
+  first.disabled = false;
+  second.disabled = false
+
+  title.innerHTML = "الجار"
+  first.value = "لام شمسية"
+  second.value = "لام قمرية"
+  first.className =""
+  second.className =""
+  question = "second"
+}
+
+function endQuiz() {
+  let container = document.getElementById('container')
+
+  container.innerHTML = `<h1 id="title">بارك الله فيك</h1><h2 id="result">النتيجة: ${data["mark"]}/2</h2>`
+  console.log(data)
+  let url = 'https://api.sheety.co/0065aebf666ff0d1035ad697d04ec656/eduGame/sheet1';
+  let body = {
+    'sheet1': data
+  }
+  fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  })
+    .then((response) => response.json())
+    .then(json => {
+    // Do something with object
+    console.log(json);
+  });
+}
+
+function updateName(el) {
+  data["name"] = el.value
+  console.log(data)
+}
+</script>
+<style>
+* {
+  font-family: tajawal;
+  transition: filter 0.2s;
+  color: white;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  background: hsl(231, 40%, 10%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+h1 {
+  font-size: 50px;
+  margin-bottom: 30px;
+}
+
+h2#result {
+  font-size: 40px;
+  font-weight: 500;
+}
+
+#first, #second {
+  width: 300px;
+  height: 150px;
+  font-size: 50px;
+  background: hsl(231, 40%, 16%);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  margin: 0 15px;
+}
+
+#first:hover, #second:hover {
+  filter: brightness(130%);
+  cursor: pointer;
+}
+
+#second.correct, #first.correct {
+  background: hsl(125, 100%, 50%);
+}
+
+#first.notCorrect, #second.notCorrect {
+  background: hsl(5, 100%, 50%);
+}
+
+#name {
+  width: 300px;
+  padding: 20px;
+  background: hsl(231, 40%, 20%);
+  border: none;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  outline: none;
+  text-align: center;
+}
+
+input {
+  line-height: 0;
+}
+
+</style>
+
